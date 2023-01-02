@@ -169,8 +169,14 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const X = (point.x - circle.center.x) ** 2;
+  const Y = (point.y - circle.center.y) ** 2;
+  const R = Math.sqrt(X + Y);
+  if (R < circle.radius) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -212,8 +218,12 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const first = isStartIncluded ? '[' : '(';
+  const last = isEndIncluded ? ']' : ')';
+  const arr = [a, b];
+  arr.sort((k, m) => k - m);
+  return (`${first}${arr[0]}, ${arr[1]}${last}`);
 }
 
 
@@ -289,6 +299,7 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
+
 function getDigitalRoot(num) {
   const a = num.toString();
   let b = 0;
@@ -296,9 +307,9 @@ function getDigitalRoot(num) {
     b += a[i] * 1;
   }
   if (b > 9) {
-    getDigitalRoot(b);
+    return getDigitalRoot(b);
   }
-  return b * 1;
+  return b;
 }
 
 
@@ -323,10 +334,20 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const item = ['()', '[]', '{}', '<>'];
+  let a = str;
+  for (let i = 0; i < item.length;) {
+    if (a.includes(item[i])) {
+      a = a.replace(item[i], '');
+      i = 0;
+    } else i += 1;
+  }
+  if (a.length === 0) {
+    return true;
+  }
+  return false;
 }
-
 
 /**
  * Returns the string with n-ary (binary, ternary, etc, where n <= 10)
@@ -348,8 +369,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -368,7 +389,6 @@ function toNaryString(/* num, n */) {
 function getCommonDirectoryPath(/* pathes */) {
   throw new Error('Not implemented');
 }
-
 
 /**
  * Returns the product of two specified matrixes.
